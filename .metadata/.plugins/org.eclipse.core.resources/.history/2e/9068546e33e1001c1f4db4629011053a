@@ -1,0 +1,39 @@
+package aula24052022;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+public class cliente {
+	public static void main(String[] args) {
+		
+		try {
+			Socket fluxo = new Socket("10.193.1.121", 12345);
+			System.out.println("Se conectou!");
+			PrintStream escreverNoFluxo = new PrintStream(fluxo.getOutputStream());
+			Scanner leDoFluxo = new Scanner(fluxo.getInputStream());
+			Scanner teclado = new Scanner(System.in);
+			while(teclado.hasNextLine()) {
+				String msg = teclado.nextLine();
+				escreverNoFluxo.println(msg);
+				
+				if(leDoFluxo.hasNext()) {
+					System.out.println(leDoFluxo.hasNextLine());
+				}
+			}
+			teclado.close();
+			escreverNoFluxo.close();
+			fluxo.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}

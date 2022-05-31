@@ -1,0 +1,35 @@
+package aula24052022;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class servidor{
+	
+	public static void main(String[] args) {
+	
+	try {
+		ServerSocket server = new ServerSocket(12345);
+		System.out.println("se preparando...");
+		Socket fluxo = server.accept();
+		System.out.println(fluxo.getInetAddress().getHostAddress());
+		Scanner leDoFluxo = new Scanner(fluxo.getInputStream());
+		PrintStream escreverNoFluxo = new PrintStream(fluxo.getOutputStream());
+		while(leDoFluxo.hasNext()) {
+			System.out.println(leDoFluxo.hasNextLine());
+			Scanner teclado = new Scanner(System.in);
+			String msg = teclado.nextLine();
+			escreverNoFluxo.println(msg);
+			teclado.close();
+		}
+		leDoFluxo.close();
+		server.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	}
+}
