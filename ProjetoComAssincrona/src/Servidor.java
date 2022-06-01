@@ -4,22 +4,45 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class servidor {
+public class Servidor extends Thread{
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+	try {
+		Scanner leDoFluxo = new Scanner(fluxo.getInputStream());
+		while(leDoFluxo.hasNextLine()) {
+			System.out.println(leDoFluxo.nextLine());
+			PrintStream escrevenofluxo = new PrintStream(fluxo.getOutputStream());
+			Scanner teclado = new Scanner(System.in);
+			if(teclado.hasNextLine()) {
+				String x = teclado.nextLine();
+				escrevenofluxo.println(x);                    
+			}
+			escrevenofluxo = null; 
+		}
+		leDoFluxo.close();
+		
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+	private Socket fluxo;
 
+	public void seConecta(){
+		try {
+			ServerSocket server = new ServerSocket(12345);
+			System.out.println("se preparando...");
+			fluxo = server.accept();
+			System.out.println(fluxo.getInetAddress().getHostAddress()+" conectado!");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
-        try {
-            ServerSocket server = new ServerSocket(12345);
-            System.out.println("se preparando...");
-            Socket fluxo = server.accept();
-            Thread entrada = new Thread();
-            entrada.start();
-            Thread saida = new Thread();
-            saida.start();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+		Thread servidor = new Servidor();
+		((Servidor) servidor).seConecta();
+		servidor.start();
+	}
 }
-	
-

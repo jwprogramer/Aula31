@@ -1,16 +1,30 @@
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
-public class cliente {
-	public static void main(String[] args) {
+public class Cliente {
+
+    public static void main(String[] args) {
         try {
             Socket fluxo = new Socket("127.0.0.1",12345);
             System.out.println("se conectou!");
-            Thread entrada = new Thread();
-            entrada.start();
-            Thread saida = new Thread();
-            saida.start();
+            PrintStream escrevenofluxo = new PrintStream(fluxo.getOutputStream());
+            Scanner teclado = new Scanner(System.in);
+            while(teclado.hasNextLine()) {
+                String x = teclado.nextLine();
+                escrevenofluxo.println(x);
+                //aqui
+                Scanner leDoFluxo = new Scanner(fluxo.getInputStream());
+                if(leDoFluxo.hasNextLine()) {
+                    System.out.println(leDoFluxo.nextLine());
+                }
+                leDoFluxo = null;
+            }
+            teclado.close();
+            escrevenofluxo.close();
+            fluxo.close();
         } catch (UnknownHostException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
