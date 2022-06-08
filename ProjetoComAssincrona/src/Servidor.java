@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,11 +17,16 @@ public class Servidor extends Thread{
 			System.out.println(leDoFluxo.nextLine());
 			PrintStream escrevenofluxo = new PrintStream(fluxo.getOutputStream());
 			Scanner teclado = new Scanner(System.in);
+			InputStream is = System.in;
 			if(teclado.hasNextLine()) {
 				String x = teclado.nextLine();
 				escrevenofluxo.println(x);                    
 			}
 			escrevenofluxo = null; 
+			InputStreamReader isr = new InputStreamReader(is );
+			BufferedReader br = new BufferedReader(isr);
+
+			String digitado = br.readLine();
 		}
 		leDoFluxo.close();
 		
