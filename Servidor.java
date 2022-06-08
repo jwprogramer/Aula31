@@ -18,17 +18,15 @@ public class Servidor extends Thread{
 			PrintStream escrevenofluxo = new PrintStream(fluxo.getOutputStream());
 			Scanner teclado = new Scanner(System.in);
 			InputStream is = System.in;
-			if(teclado.hasNextLine()) {
-				String x = teclado.nextLine();
-				escrevenofluxo.println(x);                    
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			if(br.ready()) {
+				escrevenofluxo.println(br.readLine());                    
 			}
 			escrevenofluxo = null; 
-			InputStreamReader isr = new InputStreamReader(is );
-			BufferedReader br = new BufferedReader(isr);
-
-			String digitado = br.readLine();
 		}
 		leDoFluxo.close();
+		
 		
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
